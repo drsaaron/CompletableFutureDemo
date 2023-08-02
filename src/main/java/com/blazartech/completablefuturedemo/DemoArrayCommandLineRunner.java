@@ -8,8 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +25,8 @@ public class DemoArrayCommandLineRunner implements CommandLineRunner {
     @Autowired
     private DemoFunctions demoFunctions;
 
-    private CompletableFuture<Person> completePerson(Person person) {
-        return CompletableFuture.supplyAsync(() -> person)
+    private CompletableFuture<Person> buildPerson(String name) {
+        return CompletableFuture.supplyAsync(() -> new Person(name))
                 .thenCompose(p -> demoFunctions.addAge(p))
                 .thenCompose(p -> demoFunctions.addGender(p));
     }
@@ -48,8 +46,7 @@ public class DemoArrayCommandLineRunner implements CommandLineRunner {
 
         List<String> names = Arrays.asList("Scott", "Katheen", "Sarah", "Issak", "EVH", "Jimmy Page", "Eric Clapton");
         List<CompletableFuture<Person>> peopleList = names.stream()
-                .map(n -> new Person(n))
-                .map(p -> completePerson(p))
+                .map(p -> buildPerson(p))
                 .collect(Collectors.toList());
 
         peopleList.stream()

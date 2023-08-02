@@ -4,13 +4,17 @@
  */
 package com.blazartech.completablefuturedemo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author aar1069
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Person {
     
     private String name;
