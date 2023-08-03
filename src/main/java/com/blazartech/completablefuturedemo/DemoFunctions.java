@@ -5,6 +5,7 @@
 package com.blazartech.completablefuturedemo;
 
 import java.util.concurrent.CompletableFuture;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  *
@@ -12,7 +13,9 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface DemoFunctions {
     
-    public CompletableFuture<Person> getPerson();
-    public CompletableFuture<Person> addAge(Person name);
-    public CompletableFuture<Person> addGender(Person p);
+    @Async public CompletableFuture<Person> getPerson();
+    @Async default public CompletableFuture<Person> addAge(Person p) { return addAge(p, 25); }
+    @Async public CompletableFuture<Person> addAge(Person person, int age);
+    @Async default public CompletableFuture<Person> addGender(Person p) { return addGender(p, "default"); }
+    @Async public CompletableFuture<Person> addGender(Person p, String gender);
 }

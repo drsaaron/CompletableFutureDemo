@@ -6,7 +6,6 @@ package com.blazartech.completablefuturedemo;
 
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Component;
 public class DemoFunctionsImpl implements DemoFunctions {
 
     @Override
-    @Async
     public CompletableFuture<Person> getPerson() {
         log.info("initializing person");
         Person p = new Person("Scott");
@@ -30,21 +28,18 @@ public class DemoFunctionsImpl implements DemoFunctions {
         }
         return CompletableFuture.completedFuture(p);
     }
-
+    
     @Override
-    @Async
-    public CompletableFuture<Person> addAge(Person p) {
+    public CompletableFuture<Person> addAge(Person p, int age) {
         log.info("adding age");
-        p.setAge(25);
+        p.setAge(age);
         return CompletableFuture.completedFuture(p);
     }
     
-    
     @Override
-    @Async
-    public CompletableFuture<Person> addGender(Person p) {
+    public CompletableFuture<Person> addGender(Person p, String gender) {
         log.info("adding gender");
-        p.setGender("male");
+        p.setGender(gender);
         return CompletableFuture.completedFuture(p);
     }
 }

@@ -25,10 +25,10 @@ public class DemoArrayCommandLineRunner implements CommandLineRunner {
     @Autowired
     private DemoFunctions demoFunctions;
 
-    private CompletableFuture<Person> buildPerson(String name) {
+    private CompletableFuture<Person> buildPerson(String name, int age, String gender) {
         return CompletableFuture.supplyAsync(() -> new Person(name))
-                .thenCompose(p -> demoFunctions.addAge(p))
-                .thenCompose(p -> demoFunctions.addGender(p));
+                .thenCompose(p -> demoFunctions.addAge(p, age))
+                .thenCompose(p -> demoFunctions.addGender(p, gender));
     }
 
     private Person getPerson(CompletableFuture<Person> pf) {
@@ -40,13 +40,18 @@ public class DemoArrayCommandLineRunner implements CommandLineRunner {
         } 
     }
     
+    private int age = 42;
+    private int getNextAge() {
+        return age++;
+    }
+    
     @Override
     public void run(String... args) throws Exception {
         log.info("running array demo");
 
         List<String> names = Arrays.asList("Scott", "Katheen", "Sarah", "Issak", "EVH", "Jimmy Page", "Eric Clapton");
         List<CompletableFuture<Person>> peopleList = names.stream()
-                .map(p -> buildPerson(p))
+                .map(p -> buildPerson(p, getNextAge(), "unknown"))
                 .collect(Collectors.toList());
 
         peopleList.stream()
